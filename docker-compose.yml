@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: blockchain_servir
+    restart: always
+    ports:
+      - "5001:5001"
+    volumes:
+      # Persist SQLite database
+      - ./blockchain_servir:/app/blockchain_servir
+    environment:
+      - SECRET_KEY=sua_chave_secreta_aqui
+      - BASE_URL=http://SEU_IP_OU_DOMINIO:5001
+      # - DATABASE_URL=postgresql://... (Uncomment if using Postgres)
