@@ -4,32 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto Servir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f9; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1, h2 { color: #333; }
-        .alert { padding: 10px; background: #ffeeba; margin-bottom: 10px; border-radius: 4px; }
-        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; }
-        button:hover { background: #218838; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background: #f8f9fa; }
-        nav { margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #007bff; }
+        :root {
+            --bg-color: #f0f0f0;
+            --primary: #FF90E8; /* Pink */
+            --secondary: #23A6D5; /* Blue */
+            --accent: #FFCE00; /* Yellow */
+            --dark: #121212;
+            --border: 3px solid #121212;
+            --shadow: 4px 4px 0px #121212;
+        }
+
+        body { 
+            font-family: 'Space Mono', monospace; 
+            margin: 0; 
+            padding: 20px; 
+            background: var(--bg-color); 
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 500px; 
+            background: white; 
+            padding: 40px; 
+            border: var(--border); 
+            box-shadow: var(--shadow);
+        }
+
+        h1, h2 { 
+            text-transform: uppercase; 
+            margin-top: 0; 
+            letter-spacing: -1px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .alert { 
+            padding: 15px; 
+            background: var(--accent); 
+            border: var(--border);
+            margin-bottom: 20px; 
+            font-weight: bold;
+            box-shadow: 2px 2px 0 #000;
+        }
+
+        /* Forms */
+        label { display: block; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; }
+        
+        input { 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            border: var(--border);
+            border-radius: 0;
+            background: #fff;
+            font-family: 'Space Mono', monospace;
+            font-size: 1em;
+            box-shadow: 3px 3px 0 #ddd;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: var(--shadow);
+            background: #fff;
+        }
+
+        button { 
+            background: var(--dark); 
+            color: white; 
+            border: var(--border); 
+            cursor: pointer; 
+            padding: 15px;
+            width: 100%;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: var(--shadow);
+            transition: 0.1s;
+        }
+        button:hover { 
+            background: var(--primary); 
+            color: black;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+        }
+        button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0 #000;
+        }
+
+        /* Links */
+        a { color: var(--dark); text-decoration: none; font-weight: bold; border-bottom: 2px solid var(--primary); }
+        a:hover { background: var(--primary); }
+
+        /* Nav */
+        nav { margin-bottom: 30px; text-align: center; border-bottom: var(--border); padding-bottom: 20px; }
+        nav a { margin: 0 10px; border-bottom: none; font-size: 1.1em; }
+        nav a:hover { text-decoration: underline; background: none; }
+        
+        .footer-link { display: block; text-align: center; margin-top: 20px; font-size: 0.9em; }
     </style>
 </head>
 <body>
     <div class="container">
-        <nav>
-            <a href="/login">Login</a>
-            <a href="/cadastro">Cadastro</a>
-            {% if current_user.is_authenticated %}
-                <a href="/dashboard">Dashboard</a>
-                <a href="/logout">Sair</a>
-            {% endif %}
-        </nav>
-        
+        <!-- Logo or Title Area -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span style="font-size: 3em;">🎒</span>
+        </div>
+
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
