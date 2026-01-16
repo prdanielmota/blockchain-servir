@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="text-align: center;">
+    <h1 style="font-size: 2.5em; margin-bottom: 10px;">Projeto Servir</h1>
+    <p style="font-size: 1.2em; margin-bottom: 30px;">Gamificação do voluntariado.</p>
+
+    <div style="display: grid; gap: 15px; margin-bottom: 40px;">
+        <a href="{{ url_for('auth.login') }}" style="display: block;">
+            <button>Entrar</button>
+        </a>
+        <a href="{{ url_for('auth.register') }}" style="display: block; border-bottom: none;">
+            <button style="background: var(--accent); color: black;">Criar Conta</button>
+        </a>
+    </div>
+</div>
+
+<hr style="border: 2px solid var(--dark); margin: 30px 0;">
+
+<h2 style="font-size: 1.5em;">Como Funciona</h2>
+
+<div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px;">
+    <div style="border: var(--border); padding: 15px; background: var(--secondary); color: white; box-shadow: var(--shadow);">
+        <h3 style="margin: 0;">1. Cadastre-se</h3>
+        <p style="margin: 5px 0 0;">Crie sua conta e entre para o time.</p>
+    </div>
+    <div style="border: var(--border); padding: 15px; background: var(--primary); color: black; box-shadow: var(--shadow);">
+        <h3 style="margin: 0;">2. Sirva</h3>
+        <p style="margin: 5px 0 0;">Participe de ministérios e cumpra missões.</p>
+    </div>
+    <div style="border: var(--border); padding: 15px; background: var(--accent); color: black; box-shadow: var(--shadow);">
+        <h3 style="margin: 0;">3. Evolua</h3>
+        <p style="margin: 5px 0 0;">Ganhe pontos, suba de nível e conquiste badges.</p>
+    </div>
+</div>
+
+<hr style="border: 2px solid var(--dark); margin: 30px 0;">
+
+<h2 style="font-size: 1.5em;">Dúvidas (FAQ)</h2>
+
+<div class="faq-section">
+    <details style="margin-bottom: 15px; border: var(--border); box-shadow: 2px 2px 0 var(--dark); background: white;">
+        <summary style="padding: 15px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>O que é o Servir?</span>
+            <span style="font-size: 1.5em;">+</span>
+        </summary>
+        <div style="padding: 15px; border-top: var(--border); background: #fafafa;">
+            <p style="margin: 0;">É uma plataforma para incentivar e organizar o voluntariado na igreja através de gamificação.</p>
+        </div>
+    </details>
+
+    <details style="margin-bottom: 15px; border: var(--border); box-shadow: 2px 2px 0 var(--dark); background: white;">
+        <summary style="padding: 15px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>Como ganho pontos?</span>
+            <span style="font-size: 1.5em;">+</span>
+        </summary>
+        <div style="padding: 15px; border-top: var(--border); background: #fafafa;">
+            <p style="margin: 0;">Realizando missões cadastradas pelos líderes dos ministérios. Cada missão tem uma pontuação específica.</p>
+        </div>
+    </details>
+
+    <details style="margin-bottom: 15px; border: var(--border); box-shadow: 2px 2px 0 var(--dark); background: white;">
+        <summary style="padding: 15px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center;">
+            <span>Para que servem os níveis?</span>
+            <span style="font-size: 1.5em;">+</span>
+        </summary>
+        <div style="padding: 15px; border-top: var(--border); background: #fafafa;">
+            <p style="margin: 0;">Os níveis mostram sua jornada de serviço. Quanto mais você serve, mais você evolui de "Broto" até níveis mais altos!</p>
+        </div>
+    </details>
+</div>
+
+<style>
+    /* Remove default summary marker */
+    details > summary {
+        list-style: none;
+    }
+    details > summary::-webkit-details-marker {
+        display: none;
+    }
+    /* Change icon when open */
+    details[open] summary span:last-child {
+        transform: rotate(45deg);
+    }
+</style>
+
+{% endblock %}
