@@ -17,4 +17,22 @@
     
     <button type="submit">Cadastrar</button>
 </form>
+
+<script>
+    // Robust Phone Prefill for Safari/Mobile
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const phone = urlParams.get('phone');
+        const phoneInput = document.querySelector('input[name="phone"]');
+        
+        if (phone && phoneInput) {
+            // Remove non-digits just to be safe
+            const cleanPhone = phone.replace(/\D/g, '');
+            // Only update if input is empty (don't overwrite user typing)
+            if (!phoneInput.value) {
+                phoneInput.value = cleanPhone;
+            }
+        }
+    }
+</script>
 {% endblock %}
