@@ -8,6 +8,7 @@ webhook = Blueprint('webhook', __name__)
 @webhook.route('/webhook', methods=['POST'])
 def handle_message():
     data = request.json
+    print(f"DEBUG FULL PAYLOAD: {data}") # Log everything
     
     sender = None
     text = None
@@ -19,10 +20,21 @@ def handle_message():
         
     # 2. Try Evolution API Format (Direct)
     elif 'data' in data:
-        sender = data.get('data', {}).get('key', {}).get('remoteJid')
+        key = data.get('data', {}).get('key', {})
+        sender = key.get('remoteJid')
+        
+        # HANDLE GROUPS: If message is from group, sender is the participant
+        if sender and sender.endswith('@g.us'):
+             participant = key.get('participant')
+             print(f"DEBUG: Group Message. Sender: {sender}, Participant: {participant}")
+             if participant:
+                 sender = participant
+
         msg_content = data.get('data', {}).get('message', {})
         text = msg_content.get('conversation') or msg_content.get('extendedTextMessage', {}).get('text')
-        
+    
+    print(f"DEBUG: Extracted Sender: {sender}")
+    
     if not sender:
         return jsonify({"status": "ignored", "reason": "no_sender"}), 200
         
