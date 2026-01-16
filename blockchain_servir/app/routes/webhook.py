@@ -115,14 +115,23 @@ def handle_main_menu(user, text):
         
     else:
         # Default Message (Main Menu)
-        admin_opt = "\n4️⃣ 🛡️ Aprovar Pendentes" if user.role == 'admin' else ""
-        return (
-            "🤖 *Menu Principal - Servir*\n\n"
-            "1️⃣ Ver meu Perfil\n"
-            "2️⃣ Ver Missões Disponíveis\n"
-            "3️⃣ Propor Nova Missão" + admin_opt + "\n\n"
-            "Digite o número da opção desejada."
-        )
+        if user.role == 'admin':
+            return (
+                "🤖 *Servir*\n\n"
+                "1️⃣ Ver meu Perfil\n"
+                "2️⃣ Ver Missões Disponíveis\n"
+                "3️⃣ Criar Nova Missão\n"
+                "4️⃣ Aprovar Pendentes\n\n"
+                "Digite o número da opção desejada."
+            )
+        else:
+            return (
+                "🤖 *Servir*\n\n"
+                "1️⃣ Ver meu Perfil\n"
+                "2️⃣ Ver Missões Disponíveis\n"
+                "3️⃣ Propor Nova Missão\n\n"
+                "Digite o número da opção desejada."
+            )
 
 def get_ministries_list(user, for_proposal=False):
     if for_proposal and user.role == 'admin':
