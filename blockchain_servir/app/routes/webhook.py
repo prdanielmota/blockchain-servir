@@ -34,22 +34,30 @@ def handle_message():
         phone = sender.split('@')[0]
         
         # Identify User with Flexible Search (Handle 9th digit issue)
+        print(f"DEBUG: Searching user for phone: {phone}")
         user = User.query.filter_by(phone=phone).first()
         
-        # If not found and phone has 12 digits (e.g. 55 + 2 DDD + 8 Num), try adding 9
+        # Scenario A: Webhook sends 12 digits (No 9th digit), but DB has 13
         if not user and len(phone) == 12:
-            # Insert '9' after DDD (position 4, assuming 55 is DDI)
-            # 55 92 88888888 -> 55 92 9 88888888
             phone_with_9 = phone[:4] + '9' + phone[4:]
+            print(f"DEBUG: Not found. Trying with 9: {phone_with_9}")
             user = User.query.filter_by(phone=phone_with_9).first()
+            
+        # Scenario B: Webhook sends 13 digits (With 9th digit), but DB has 12
+        if not user and len(phone) == 13:
+            phone_without_9 = phone[:4] + phone[5:]
+            print(f"DEBUG: Not found. Trying without 9: {phone_without_9}")
+            user = User.query.filter_by(phone=phone_without_9).first()
         
         response_text = ""
         
         if not user:
+            print(f"DEBUG: User NOT found for {phone}")
             base_url = current_app.config.get('BASE_URL', 'http://localhost:5001')
             # Pass the received phone to pre-fill the form
             response_text = f"👋 Olá! Você ainda não tem cadastro no *Servir*.\nPor favor, cadastre-se em: {base_url}/cadastro?phone={phone}"
         else:
+            print(f"DEBUG: User FOUND: {user.name} ({user.id})")
             response_text = process_command(user, text)
             
         # In a real scenario, you would send this response back via Evolution API
