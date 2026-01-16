@@ -1,0 +1,1 @@
+web: gunicorn "blockchain_servir.app:create_app()"

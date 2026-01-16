@@ -1,0 +1,45 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1>Editar Usuário: {{ user.name }}</h1>
+
+<div class="card" style="max-width: 600px;">
+    <form method="POST">
+        <label>Nome</label>
+        <input type="text" name="name" value="{{ user.name }}" required>
+        
+        <label>Email</label>
+        <input type="email" name="email" value="{{ user.email }}" required>
+        
+        <label>Telefone</label>
+        <input type="text" name="phone" value="{{ user.phone }}" required>
+        
+        <label>Role</label>
+        <select name="role">
+            <option value="user" {% if user.role == 'user' %}selected{% endif %}>Usuário Comum</option>
+            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Administrador</option>
+        </select>
+        
+        <hr style="margin: 20px 0; border: 0; border-top: 2px solid #000;">
+        
+        <h3>Ministérios Atribuídos</h3>
+        <p style="font-size: 0.9em; color: #666;">Selecione os ministérios que este usuário pode ver e participar.</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;">
+            {% for m in ministries %}
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; border: 2px solid #000; padding: 10px; border-radius: 4px; background: #fff;">
+                <input type="checkbox" name="ministries" value="{{ m.id }}" 
+                    {% if m in user.ministries %}checked{% endif %}
+                    style="width: auto; margin: 0;">
+                {{ m.name }}
+            </label>
+            {% endfor %}
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button type="submit" class="btn btn-success">Salvar Alterações</button>
+            <a href="{{ url_for('admin.list_users') }}" class="btn" style="background: #ccc;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

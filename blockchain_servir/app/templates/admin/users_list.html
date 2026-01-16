@@ -1,0 +1,41 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1>Gerenciar Usuários</h1>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Pontos</th>
+                <th>Role</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.phone }}</td>
+                <td><strong>{{ u.points }}</strong></td>
+                <td>
+                    {% if u.role == 'admin' %}
+                    <span style="color: purple; font-weight: bold;">Admin</span>
+                    {% else %}
+                    User
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.edit_user', id=u.id) }}" class="btn btn-sm btn-primary">✏️ Editar</a>
+                    <a href="{{ url_for('admin.delete_user', id=u.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Excluir usuário?')">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

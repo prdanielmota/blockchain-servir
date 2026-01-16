@@ -1,0 +1,141 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<!-- User Profile Card (Visible to All) -->
+<div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
+    <div style="font-size: 3em;">{{ current_user.badge }}</div>
+    <div>
+        <h2 style="margin: 0;">{{ current_user.name }}</h2>
+        <p style="margin: 5px 0; color: #666;">Estágio: <strong>{{ current_user.stage }}</strong></p>
+        <p style="margin: 5px 0; color: #28a745; font-size: 1.2em;">⭐ {{ current_user.points }} pontos</p>
+    </div>
+</div>
+
+{% if current_user.role == 'admin' %}
+    <!-- Admin Section -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+        <a href="{{ url_for('admin.list_ministries') }}" class="card" style="text-decoration: none; color: inherit; text-align: center; display: block;">
+            <h3 style="margin: 0; color: #2980b9;">🏢 Gerenciar Ministérios</h3>
+            <p style="margin: 10px 0;">Criar e editar áreas</p>
+        </a>
+        
+        <a href="{{ url_for('admin.list_actions') }}" class="card" style="text-decoration: none; color: inherit; text-align: center; display: block;">
+            <h3 style="margin: 0; color: #27ae60;">📋 Gerenciar Missões</h3>
+            <p style="margin: 10px 0;">Revisar e pontuar</p>
+        </a>
+        
+        <a href="{{ url_for('admin.list_users') }}" class="card" style="text-decoration: none; color: inherit; text-align: center; display: block;">
+            <h3 style="margin: 0; color: #8e44ad;">👥 Gerenciar Usuários</h3>
+            <p style="margin: 10px 0;">Controle de acesso</p>
+        </a>
+    </div>
+
+    <h3>🏆 Ranking Global (Top 10)</h3>
+    <div style="margin-bottom: 30px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Insígnia</th>
+                    <th>Pontos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in ranking %}
+                <tr style="{% if loop.index == 1 %}background: #ffd700; font-weight: bold;{% elif loop.index == 2 %}background: #c0c0c0;{% elif loop.index == 3 %}background: #cd7f32;{% endif %}">
+                    <td>{{ loop.index }}º</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.badge }} {{ user.stage }}</td>
+                    <td>{{ user.points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Blockchain Explorer (Últimos Blocos)</h3>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Timestamp</th>
+                    <th>User ID</th>
+                    <th>Hash</th>
+                    <th>Dados (JSON)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for block in blocks %}
+                <tr>
+                    <td>{{ block.id }}</td>
+                    <td>{{ block.timestamp.strftime('%d/%m %H:%M') }}</td>
+                    <td>{{ block.user_id }}</td>
+                    <td style="font-family: monospace; font-size: 0.8em;">{{ block.hash[:10] }}...</td>
+                    <td style="font-family: monospace; font-size: 0.8em;">{{ block.data }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Todos os Usuários</h3>
+    <p><a href="{{ url_for('admin.list_users') }}">Ver lista completa e editar >></a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Estágio</th>
+                <th>Pontos</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users[:5] %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.badge }} {{ user.stage }}</td>
+                <td>{{ user.points }}</td>
+                <td>{{ user.role }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% else %}
+    <!-- User Section -->
+    <h3>Meu Histórico de Conquistas</h3>
+    {% if blocks %}
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Conquista</th>
+                    <th>Hash (Prova)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for block in blocks %}
+                <tr>
+                    <td>{{ block.timestamp.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>
+                        <!-- Parse JSON data simply -->
+                        {{ block.data }}
+                    </td>
+                    <td style="font-family: monospace; font-size: 0.8em; color: #aaa;">{{ block.hash }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>Você ainda não realizou nenhuma missão. Vá ao WhatsApp e comece agora! 🚀</p>
+    {% endif %}
+
+{% endif %}
+
+{% endblock %}

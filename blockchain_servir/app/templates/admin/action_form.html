@@ -1,0 +1,40 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1>{{ 'Editar' if action else 'Nova' }} Missão</h1>
+
+<div class="card" style="max-width: 600px;">
+    <form method="POST">
+        <label>Nome da Missão</label>
+        <input type="text" name="name" value="{{ action.name if action else '' }}" required autofocus>
+        
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <label>Pontos</label>
+                <input type="number" name="points" value="{{ action.points if action else 10 }}" required>
+            </div>
+            
+            <div style="flex: 1;">
+                <label>Ministério</label>
+                <select name="ministry_id">
+                    {% for m in ministries %}
+                    <option value="{{ m.id }}" {% if action and action.ministry_id == m.id %}selected{% endif %}>{{ m.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <label>Status</label>
+        <select name="status">
+            <option value="approved" {% if action and action.status == 'approved' %}selected{% endif %}>Aprovada (Ativa)</option>
+            <option value="pending" {% if action and action.status == 'pending' %}selected{% endif %}>Pendente</option>
+            <option value="rejected" {% if action and action.status == 'rejected' %}selected{% endif %}>Rejeitada</option>
+        </select>
+        
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a href="{{ url_for('admin.list_actions') }}" class="btn" style="background: #ccc;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

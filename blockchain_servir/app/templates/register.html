@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Cadastro Servir</h2>
+<form method="POST">
+    <label>Nome Completo</label>
+    <input type="text" name="name" required>
+    
+    <label>Email</label>
+    <input type="email" name="email" required>
+    
+    <label>WhatsApp (somente números, ex: 5511999999999)</label>
+    <input type="text" name="phone" required placeholder="5511999999999" value="{{ prefill_phone }}">
+    
+    <label>Senha</label>
+    <input type="password" name="password" required>
+    
+    <button type="submit">Cadastrar</button>
+</form>
+{% endblock %}

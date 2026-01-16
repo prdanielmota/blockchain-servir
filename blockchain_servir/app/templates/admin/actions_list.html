@@ -1,0 +1,52 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Gerenciar Missões</h1>
+    <a href="{{ url_for('admin.new_action') }}" class="btn btn-primary">+ Nova Missão</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Pontos</th>
+                <th>Ministério</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in actions %}
+            <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.name }}</td>
+                <td>{{ a.points }}</td>
+                <td>
+                    {% if a.ministry %}
+                        {{ a.ministry.name }}
+                    {% else %}
+                        <span style="color: #999;">Geral</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if a.status == 'approved' %}
+                    <span style="color: green; font-weight: bold;">Ativa</span>
+                    {% elif a.status == 'pending' %}
+                    <span style="color: orange; font-weight: bold;">Pendente</span>
+                    {% else %}
+                    <span style="color: red;">Rejeitada</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.edit_action', id=a.id) }}" class="btn btn-sm btn-primary">✏️</a>
+                    <a href="{{ url_for('admin.delete_action', id=a.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Excluir esta missão?')">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

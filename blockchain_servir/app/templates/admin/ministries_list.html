@@ -1,0 +1,34 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Gerenciar Ministérios</h1>
+    <a href="{{ url_for('admin.new_ministry') }}" class="btn btn-primary">+ Novo Ministério</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th width="50">ID</th>
+                <th>Nome</th>
+                <th width="150">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in ministries %}
+            <tr>
+                <td>{{ m.id }}</td>
+                <td><strong>{{ m.name }}</strong></td>
+                <td>
+                    <a href="{{ url_for('admin.edit_ministry', id=m.id) }}" class="btn btn-sm btn-primary">✏️</a>
+                    {% if m.id != 1 %} <!-- Protect 'Geral' -->
+                    <a href="{{ url_for('admin.delete_ministry', id=m.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza? Isso pode afetar missões vinculadas.')">🗑️</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
