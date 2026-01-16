@@ -1,7 +1,11 @@
 from flask import Flask
 from flask_login import LoginManager
 from .models import db, User
-from config import Config
+# Fix import path for Docker/Gunicorn
+try:
+    from blockchain_servir.config import Config
+except ImportError:
+    from config import Config
 import os
 
 def create_app():
