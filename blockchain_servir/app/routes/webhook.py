@@ -47,8 +47,10 @@ def handle_message():
         
         if not user:
             base_url = current_app.config.get('BASE_URL', 'http://localhost:5001')
+            # Ensure phone is clean (only digits) for URL
+            clean_phone = re.sub(r'\D', '', phone)
             # Pass the received phone to pre-fill the form
-            response_text = f"👋 Olá! Você ainda não tem cadastro no *Servir*.\nPor favor, cadastre-se em: {base_url}/cadastro?phone={phone}"
+            response_text = f"👋 Olá! Você ainda não tem cadastro no *Servir*.\nPor favor, cadastre-se em: {base_url}/cadastro?phone={clean_phone}"
         else:
             response_text = process_command(user, text)
             
