@@ -313,13 +313,14 @@ def handle_propose_name(user, text):
             name=text, 
             points=0, 
             created_by_id=user.id,
-            status='pending'
+            status='pending',
+            ministry_id=1 # Default to 'Comunidade SER'
         )
         db.session.add(new_action)
         db.session.commit()
         
         set_state(user, 'MAIN')
-        return "✅ *Proposta Enviada!*\nSua missão será analisada por um Admin, que definirá a pontuação.\n\n" + handle_main_menu(user, "menu")
+        return "✅ *Proposta Enviada!*\nSua missão será analisada por um Admin.\n\n" + handle_main_menu(user, "menu")
 
 def handle_propose_points(user, text):
     try:
