@@ -62,3 +62,7 @@ class Block(db.Model):
     # Metadata for quick query
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     action_id = db.Column(db.Integer, db.ForeignKey('action_definition.id'), nullable=True)
+
+    # Relationships
+    user = db.relationship('User', backref=db.backref('blocks', lazy=True))
+    action = db.relationship('ActionDefinition', backref=db.backref('blocks', lazy=True))
