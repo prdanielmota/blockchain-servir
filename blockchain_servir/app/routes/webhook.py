@@ -416,8 +416,9 @@ def handle_admin_set_points(user, text):
     except ValueError:
         return "❌ Digite um número."
 
-def process_command(user, text):
-    text = text.lower().strip()
+def process_command(user, raw_text):
+    # Normalize command check, but keep original text for content
+    text = raw_text.lower().strip()
     state = user.menu_state or 'MAIN'
     
     if state == 'MAIN':
@@ -430,7 +431,8 @@ def process_command(user, text):
     elif state == 'ACTION_FEEDBACK':
         return handle_feedback(user, text)
     elif state == 'PROPOSE_NAME':
-        return handle_propose_name(user, text)
+        # Pass raw_text to preserve case for Mission Name
+        return handle_propose_name(user, raw_text.strip())
     elif state == 'PROPOSE_POINTS':
         return handle_propose_points(user, text)
     elif state == 'ADMIN_PENDING_LIST':
