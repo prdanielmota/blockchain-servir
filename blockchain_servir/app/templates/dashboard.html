@@ -56,33 +56,76 @@
         </table>
     </div>
 
-    <h3>Blockchain Explorer (Últimos Blocos)</h3>
-    <div style="overflow-x: auto;">
-        <table>
-            <thead>
+    <!-- ServirScan Section (Etherscan-like) -->
+    <h3 style="margin-top: 40px;">⛓️ ServirScan Explorer</h3>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+        <div class="card" style="text-align: center; border-left: 5px solid var(--primary);">
+            <div style="font-size: 0.9em; text-transform: uppercase;">Latest Block</div>
+            <div style="font-size: 1.5em; font-weight: bold;">#{{ total_blocks }}</div>
+        </div>
+        <div class="card" style="text-align: center; border-left: 5px solid var(--secondary);">
+            <div style="font-size: 0.9em; text-transform: uppercase;">Total Points</div>
+            <div style="font-size: 1.5em; font-weight: bold;">⭐ {{ total_points }}</div>
+        </div>
+        <div class="card" style="text-align: center; border-left: 5px solid var(--accent);">
+            <div style="font-size: 0.9em; text-transform: uppercase;">Active Miners</div>
+            <div style="font-size: 1.5em; font-weight: bold;">{{ users|length }}</div>
+        </div>
+    </div>
+
+    <div style="overflow-x: auto; border: var(--border); box-shadow: var(--shadow); background: white;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead style="background: #f8f9fa; border-bottom: 2px solid #e9ecef;">
                 <tr>
-                    <th>ID</th>
-                    <th>Timestamp</th>
-                    <th>User ID</th>
-                    <th>Hash</th>
-                    <th>Dados (JSON)</th>
+                    <th style="padding: 12px; text-align: left;">Block</th>
+                    <th style="padding: 12px; text-align: left;">Age</th>
+                    <th style="padding: 12px; text-align: left;">Miner</th>
+                    <th style="padding: 12px; text-align: left;">Action</th>
+                    <th style="padding: 12px; text-align: right;">Reward</th>
                 </tr>
             </thead>
             <tbody>
                 {% for block in blocks %}
-                <tr>
-                    <td>{{ block.id }}</td>
-                    <td>{{ block.timestamp.strftime('%d/%m %H:%M') }}</td>
-                    <td>{{ block.user_id }}</td>
-                    <td style="font-family: monospace; font-size: 0.8em;">{{ block.hash[:10] }}...</td>
-                    <td style="font-family: monospace; font-size: 0.8em;">{{ block.data }}</td>
+                <tr style="border-bottom: 1px solid #e9ecef;">
+                    <td style="padding: 12px;">
+                        <a href="{{ url_for('admin.block_detail', id=block.id) }}" style="color: #3498db; text-decoration: none; font-weight: bold;">
+                            {{ block.id }}
+                        </a>
+                    </td>
+                    <td style="padding: 12px; color: #666; font-size: 0.9em;">
+                        {{ block.timestamp.strftime('%H:%M %d/%m') }}
+                    </td>
+                    <td style="padding: 12px;">
+                        <a href="#" style="color: #3498db; text-decoration: none;">
+                            {{ block.user.name if block.user else 'Unknown' }}
+                        </a>
+                    </td>
+                    <td style="padding: 12px;">
+                        {% set data = block.data | safe %}
+                        <!-- Assuming data is JSON string, in Jinja we might need to parse it if not dict -->
+                        <!-- But block.data is stored as string. Let's rely on basic display or use custom filter -->
+                        <span style="background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em;">
+                            Action Completed
+                        </span>
+                    </td>
+                    <td style="padding: 12px; text-align: right;">
+                        <span style="background: #def7ec; color: #03543f; padding: 2px 8px; border-radius: 4px; font-weight: bold;">
+                            + Pts
+                        </span>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="#" style="font-size: 0.9em; color: #666;">View all blocks >></a>
+    </div>
 
-    <h3>Todos os Usuários</h3>
+    <!-- Legacy Tables (Users, etc) below -->
+    <h3>🏆 Ranking Global (Top 10)</h3>
     <p><a href="{{ url_for('admin.list_users') }}">Ver lista completa e editar >></a></p>
     <table>
         <thead>

@@ -19,11 +19,40 @@ def dashboard():
         # Ministries
         ministries = Ministry.query.all()
         
-        return render_template('dashboard.html', users=users, blocks=blocks, actions=actions, ranking=ranking, ministries=ministries)
+        # Blockchain Stats
+        total_blocks = Block.query.count()
+        # Sum points from all blocks (MVP: iterate, but better with SQL func)
+        # Using SQLalchemy func would be better: db.session.query(func.sum(User.points)).scalar()
+        # But User.points is current state. Let's sum Block data? 
+        # For now, let's just use Sum of all User points as "Market Cap"
+        total_points = sum(u.points for u in users)
+        
+        return render_template(
+            'dashboard.html', 
+            users=users, 
+            blocks=blocks, 
+            actions=actions, 
+            ranking=ranking, 
+            ministries=ministries,
+            total_blocks=total_blocks,
+            total_points=total_points
+        )
     else:
         # User View: Only own blocks
         blocks = Block.query.filter_by(user_id=current_user.id).order_by(Block.id.desc()).all()
         return render_template('dashboard.html', blocks=blocks)
+
+@admin.route('/block/<int:id>')
+def block_detail(id):
+    # Public or Protected? Let's make it public for transparency, or protected.
+    # User asked for Etherscan-like, so maybe public? 
+    # For now, let's keep login required for simplicity, or allow public if desired.
+    # Let's assume login required as it's under admin blueprint but we can allow all users.
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+        
+    block = Block.query.get_or_404(id)
+    return render_template('block_detail.html', block=block)
 
 # --- NEW CRUD ROUTES ---
 
