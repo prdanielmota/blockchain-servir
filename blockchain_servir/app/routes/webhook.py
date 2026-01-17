@@ -77,6 +77,16 @@ def set_state(user, state, context=None):
 
 @webhook.route('/webhook', methods=['POST'])
 def handle_message():
+    # 1. Security Check: Validate API Key
+    secret = current_app.config.get('WEBHOOK_SECRET')
+    api_key = request.headers.get('apikey') or request.args.get('apikey')
+    
+    # Allow if secret is not set (dev) or if keys match
+    if secret and secret != 'segredo-padrao-mude-no-env':
+        if api_key != secret:
+            print(f"SECURITY ALERT: Invalid API Key attempt from {request.remote_addr}")
+            return jsonify({"status": "forbidden", "reason": "invalid_api_key"}), 403
+
     data = request.json
     print(f"DEBUG PAYLOAD: {data}")
     

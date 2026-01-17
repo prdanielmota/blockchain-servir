@@ -22,3 +22,12 @@ class Config:
     # IP/Domain to be used in links sent by the bot
     # In production, set BASE_URL env var to your https://app-name.railway.app
     BASE_URL = os.environ.get('BASE_URL') or "http://127.0.0.1:5001"
+
+    # Security Config
+    # API Key to protect the webhook endpoint
+    WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET') or 'segredo-padrao-mude-no-env'
+    
+    # Cookie Security (Enable in Production)
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SECURE = True if os.environ.get('FLASK_ENV') == 'production' else False
+    SESSION_COOKIE_SAMESITE = 'Lax'
